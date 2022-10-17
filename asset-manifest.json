@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/react-xiangqi-app/static/css/main.99257fd4.css",
+    "main.js": "/react-xiangqi-app/static/js/main.3ba99ad3.js",
+    "static/media/black_king.svg": "/react-xiangqi-app/static/media/black_king.9db03ae4de3788065d33.svg",
+    "static/media/black_knight.svg": "/react-xiangqi-app/static/media/black_knight.a3c0dea0feab5c12c51d.svg",
+    "static/media/black_rook.svg": "/react-xiangqi-app/static/media/black_rook.d52b5387f8320b2f6c97.svg",
+    "static/media/black_bishop.svg": "/react-xiangqi-app/static/media/black_bishop.1b225a1f8a3c2334e861.svg",
+    "static/media/black_cannon.svg": "/react-xiangqi-app/static/media/black_cannon.afe765c9d61a72652593.svg",
+    "static/media/black_pawn.svg": "/react-xiangqi-app/static/media/black_pawn.298f6bec6272197d7fb4.svg",
+    "static/media/black_advisor.svg": "/react-xiangqi-app/static/media/black_advisor.c587defd2f890965d7cb.svg",
+    "static/media/red_cannon.svg": "/react-xiangqi-app/static/media/red_cannon.bce5837ad0e40a0373bc.svg",
+    "static/media/red_knight.svg": "/react-xiangqi-app/static/media/red_knight.00834a21483d0c8e84ea.svg",
+    "static/media/red_rook.svg": "/react-xiangqi-app/static/media/red_rook.1dbaf8e7bfd48a370831.svg",
+    "static/media/red_king.svg": "/react-xiangqi-app/static/media/red_king.98f557d7911fa90fb6b1.svg",
+    "static/media/red_bishop.svg": "/react-xiangqi-app/static/media/red_bishop.325cb4a9367ddeeaff5e.svg",
+    "static/media/red_advisor.svg": "/react-xiangqi-app/static/media/red_advisor.5721a7bf70019d350f47.svg",
+    "static/media/red_pawn.svg": "/react-xiangqi-app/static/media/red_pawn.e6c08e54bdb2984db88f.svg",
+    "static/media/xiangqi_gmchess_wood.svg": "/react-xiangqi-app/static/media/xiangqi_gmchess_wood.df76b42222212bfc1538.svg",
+    "index.html": "/react-xiangqi-app/index.html",
+    "main.99257fd4.css.map": "/react-xiangqi-app/static/css/main.99257fd4.css.map",
+    "main.3ba99ad3.js.map": "/react-xiangqi-app/static/js/main.3ba99ad3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.99257fd4.css",
+    "static/js/main.3ba99ad3.js"
+  ]
+}
