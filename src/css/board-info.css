@@ -1,0 +1,10 @@
+.board-info{
+    margin: 10px 20px;
+    padding: 20px;
+    border-radius: 5px;
+    background: hsl(30,6.5%,18%);
+}
+
+.captured-piece__container{
+    padding: 10px;
+}

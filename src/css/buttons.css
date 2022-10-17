@@ -1,0 +1,40 @@
+.btn{
+    outline:none;
+    border:none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    margin-right: 5px;
+    font-size: 20px;
+}
+
+.board-options-container{
+    margin-bottom: 10px;
+}
+
+.btn--primary{
+    background-color: hsl(87.2,35%,48.2%);
+}
+
+.btn--primary:hover{
+    background-color: hsl(87.2,35%,38.2%);
+}
+
+.btn--blue{
+    background-color: hsl(198, 99%, 48%);;
+}
+
+.btn--blue:hover{
+    background-color: hsl(198, 99%, 38%);
+}
+
+.btn--close{
+    background-color: hsl(0,100%,50%);
+}
+
+.btn--close:hover{
+    background-color: hsl(0,100%,40%);
+}

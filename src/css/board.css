@@ -1,0 +1,12 @@
+.board{
+    margin: 10px 30px;
+    display: grid;
+    grid-template-columns: repeat(9,50px);
+    grid-template-rows: repeat(10,50px);
+    width: 450px;
+    min-height:500px;
+    background: url(../images/xiangqi_gmchess_wood.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}

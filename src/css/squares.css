@@ -1,0 +1,27 @@
+img {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+.square__available {
+  position: relative;
+}
+.square__available::after {
+  content: "\2219";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+  color: hsl(120, 73.4%, 44.9%);
+  font-size: 45px;
+  font-weight: 700;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.square__available:hover {
+  border: 2px solid hsl(60,100%,50%);
+}

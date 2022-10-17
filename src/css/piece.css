@@ -1,0 +1,7 @@
+.piece {
+  width: 50px;
+  height: 50px;
+}
+.highlighted {
+  border: 2px solid hsl(60, 100%, 50%);
+}

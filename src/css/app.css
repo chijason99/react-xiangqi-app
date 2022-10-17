@@ -1,0 +1,40 @@
+@import-normalize;
+@import "fonts.css";
+@import "buttons.css";
+@import "squares.css";
+@import "board.css";
+@import "board-info.css";
+@import "captured-piece.css";
+@import "FEN-generator.css";
+@import "piece.css";
+@import "FEN-parser.css";
+*,*::after, *::before{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background:hsl(30,6.5%,30%);
+    color: white;
+}
+*{
+    font-family: Ubuntu;
+}
+.app__header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app__container{
+    display: grid;
+    grid-template-columns: 450px 1fr;
+    grid-template-rows: 1fr;
+    gap: 50px;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 35px;
+}

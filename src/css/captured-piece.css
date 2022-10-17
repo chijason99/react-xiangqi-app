@@ -1,0 +1,10 @@
+.captured-piece-list__container{
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: 50px;
+    column-gap: 3px;
+}
+
+.captured-piece-list__container img{
+    cursor:default;
+}
