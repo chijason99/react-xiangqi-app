@@ -3,7 +3,7 @@ img {
   height: auto;
   cursor: pointer;
 }
-.square__available {
+/* .square__available {
   position: relative;
 }
 .square__available::after {
@@ -20,7 +20,7 @@ img {
   font-weight: 700;
   pointer-events: none;
   cursor: pointer;
-}
+} */
 
 .square__available:hover {
   border: 2px solid hsl(60,100%,50%);

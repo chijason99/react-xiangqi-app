@@ -3,10 +3,10 @@ import { BoardContext } from '../App'
 export default function FENParser() {
   const [isClicked, setIsClicked] = useState(true)
   const [inputFEN, setInputFEN, FEN] = useState('')
-  const {splitFENInput} = useContext(BoardContext)
+  const {handleParseFENInput, validFENInput} = useContext(BoardContext)
 
   function handleClickParseFEN(){
-    splitFENInput(inputFEN)
+    handleParseFENInput(inputFEN)
   }
 
   function handleInputFEN(e){
@@ -16,7 +16,7 @@ export default function FENParser() {
     <>
     {!isClicked && <button className='btn btn--primary'>Parse FEN</button>}
     {isClicked  &&  <textarea className='FEN-input' type="text" onChange={(e) => handleInputFEN(e)} />}
-    {isClicked  &&  <button className='btn btn--blue' onClick={()=>{splitFENInput(inputFEN)}}>Parse</button>}
+    {isClicked  &&  <button className='btn btn--blue' onClick={()=>{handleParseFENInput(inputFEN)}}>Parse</button>}
     {isClicked  &&  <button className='btn btn--close'>&times;</button>}
     </>
   )

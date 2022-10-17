@@ -95,7 +95,7 @@ function App() {
             piece: selectedSquareInfo.piece,
             color: selectedSquareInfo.color,
           };
-           // change turn order
+          // change turn order
           currentTurn === "red"
             ? setCurrentTurn("black")
             : setCurrentTurn("red");
@@ -161,13 +161,31 @@ function App() {
     }
     setFENOutput(FENQuery.join("/"));
   }
-  function splitFENInput(FEN) {
+  function handleParseFENInput(FEN) {
     const splitUpFEN = FEN.split("/");
     const lastFEN = splitUpFEN[9].split(" ")[0]; // removing everything but the FEN code in the last row
     splitUpFEN[splitUpFEN.length - 1] = lastFEN;
     console.log(splitUpFEN);
+    const decodedFEN = splitUpFEN.map(FENstring => {
+      return FENstring
+        .replace(/9/g, "111111111")
+        .replace(/8/g, "11111111")
+        .replace(/7/g, "1111111")
+        .replace(/6/g, "111111")
+        .replace(/5/g, "11111")
+        .replace(/4/g, "1111")
+        .replace(/3/g, "111")
+        .replace(/2/g, "11");
+    });
+    console.log(decodedFEN);
   }
-  function validFEN(FENstring) {}
+  function validFENInput(input) {
+    if (typeof input.trim() !== "string") {
+      console.log("not string", typeof input);
+      return;
+    } else {
+    }
+  }
 
   return (
     <BoardContext.Provider
@@ -176,7 +194,8 @@ function App() {
         capturedPieceList,
         handleGenerateFEN,
         FENOutput,
-        splitFENInput,
+        handleParseFENInput,
+        validFENInput,
       }}
     >
       <div>
