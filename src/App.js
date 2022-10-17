@@ -22,6 +22,7 @@ function App() {
         isAvailable: true,
         isPreviousMoved: false,
         isJustMoved: false,
+        isSelected: false,
       };
       squares.push(square);
     });
@@ -159,25 +160,82 @@ function App() {
     for (const row of rowFEN) {
       FENQuery.push(row.join(""));
     }
-    setFENOutput(FENQuery.join("/"));
+    const turnOrder = currentTurn === "red" ? "w" : "b";
+    const result = `${FENQuery.join("/")} ${turnOrder}`;
+    setFENOutput(result);
   }
+
   function handleParseFENInput(FEN) {
     const splitUpFEN = FEN.split("/");
-    const lastFEN = splitUpFEN[9].split(" ")[0]; // removing everything but the FEN code in the last row
+    const lastFEN = splitUpFEN[9].split(" ")[0];
+    const turnOrder = splitUpFEN[9].split(" ")[1];
     splitUpFEN[splitUpFEN.length - 1] = lastFEN;
-    console.log(splitUpFEN);
-    const decodedFEN = splitUpFEN.map(FENstring => {
-      return FENstring
-        .replace(/9/g, "111111111")
+    const decodedFEN = splitUpFEN.map((FENstring) => {
+      return FENstring.replace(/9/g, "111111111")
         .replace(/8/g, "11111111")
         .replace(/7/g, "1111111")
         .replace(/6/g, "111111")
         .replace(/5/g, "11111")
         .replace(/4/g, "1111")
         .replace(/3/g, "111")
-        .replace(/2/g, "11");
+        .replace(/2/g, "11")
+        .split("");
     });
     console.log(decodedFEN);
+    const newSqr = [];
+    decodedFEN.forEach((FENstring, FENStringIndex) => {
+      FENstring.forEach((FENletter, letterIndex) => {
+        const sqrFromFEN = {
+          piece: identifyPiece(FENletter),
+          color: identifyColor(FENletter),
+          row: 10 - FENStringIndex,
+          column: letterIndex + 1,
+          id: `${10 - FENStringIndex}-${letterIndex + 1}`,
+          isAvailable: true,
+          isPreviousMoved: false,
+          isJustMoved: false,
+          isSelected: false,
+        };
+        newSqr.push(sqrFromFEN);
+      });
+    });
+    console.log(newSqr);
+    setSqr(newSqr);
+    if (turnOrder) {
+      turnOrder === "w" ? setCurrentTurn("red") : setCurrentTurn("black");
+    }
+    setCounter(0);
+  }
+  function identifyPiece(letter) {
+    // identify piece from letters of FEN string
+    switch (letter.toUpperCase()) {
+      case "K":
+        return "king";
+      case "R":
+        return "rook";
+      case "N":
+        return "knight";
+      case "C":
+        return "cannon";
+      case "A":
+        return "advisor";
+      case "B":
+        return "bishop";
+      case "P":
+        return "pawn";
+      default:
+        return null;
+    }
+  }
+  function identifyColor(letter) {
+    if (parseInt(letter) === 1) {
+      return null;
+    } else if (letter === letter.toUpperCase()) {
+      // is capital, i.e. is red
+      return "red";
+    } else {
+      return "black";
+    }
   }
   function validFENInput(input) {
     if (typeof input.trim() !== "string") {
