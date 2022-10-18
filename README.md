@@ -6,6 +6,7 @@ Functions :
 2. Reading FEN input and generate position on board
 3. Giving you the FEN of the position on board
 4. Flipping the board around
+5. Validation for the FEN input
 
 Functions to be added:
 
