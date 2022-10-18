@@ -9,7 +9,7 @@
 @import "piece.css";
 @import "FEN-parser.css";
 @import "error-modal.css";
-/* @import "current-turn.css"; */
+
 *,
 *::after,
 *::before {
