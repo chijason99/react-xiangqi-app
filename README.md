@@ -9,9 +9,4 @@ Functions :
 
 Functions to be added:
 
-1. Validation for the FEN input
-2. Validation for the movement of the pieces
-3. A list of moves that players made in the game
-4. Drag and drop function of the pieces on board
-5. Changing the theme of the app
-6. To be continued
+~~1. Validation for the FEN input~~ 2. Validation for the movement of the pieces 3. A list of moves that players made in the game 4. Drag and drop function of the pieces on board 5. Changing the theme of the app 6. To be continued
