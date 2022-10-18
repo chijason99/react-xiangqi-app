@@ -3,10 +3,15 @@ import { BoardContext } from "../App";
 export default function FENParser() {
   const [isClicked, setIsClicked] = useState(false);
   const [inputFEN, setInputFEN] = useState("");
-  const { handleParseFENInput, validFENInput } = useContext(BoardContext);
+  const { handleParseFENInput, validFENInput, handleOpenErrorModal } =
+    useContext(BoardContext);
 
   function handleClickParseFEN() {
-    handleParseFENInput(inputFEN);
+    if (validFENInput(inputFEN)) {
+      handleParseFENInput(inputFEN);
+    } else {
+      handleOpenErrorModal();
+    }
     setInputFEN("");
   }
 
@@ -22,7 +27,11 @@ export default function FENParser() {
   }
   return (
     <>
-      {!isClicked && <button className="btn btn--primary" onClick={() => handleOpen()}>Parse FEN</button>}
+      {!isClicked && (
+        <button className="btn btn--primary" onClick={() => handleOpen()}>
+          Parse FEN
+        </button>
+      )}
       {isClicked && (
         <textarea
           className="FEN-input"
