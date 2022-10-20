@@ -1,8 +1,9 @@
 .board-info {
+  color: black;
   margin: 10px 20px;
   padding: 20px;
   border-radius: 5px;
-  background: hsl(30, 6.5%, 30%);
+  background: white;
 }
 
 .captured-piece__container {

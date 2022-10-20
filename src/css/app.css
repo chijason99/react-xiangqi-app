@@ -8,7 +8,7 @@
 @import "FEN-generator.css";
 @import "piece.css";
 @import "FEN-parser.css";
-@import "error-modal.css";
+@import "notification-modal.css";
 
 *,
 *::after,
@@ -19,8 +19,10 @@
 body {
   margin: 0;
   padding: 0;
-  background: hsl(30, 6.5%, 50%);
+  background: rgb(253, 253, 253);
   color: white;
+  margin: 0 auto;
+  max-width: 1100px;
 }
 * {
   font-family: Ubuntu;

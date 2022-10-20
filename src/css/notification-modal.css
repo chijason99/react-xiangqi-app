@@ -1,4 +1,4 @@
-.error-modal-container {
+.notification-modal-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,17 +13,19 @@
   z-index: 100;
   pointer-events: none;
 }
-.error-modal {
+.notification-modal {
   background: white;
   color: black;
   border-radius: 5px;
   height: 100px;
   padding: 5px;
+  width: 300px;
+  text-align: center;
 }
-.error-modal-btn-container {
+.notification-modal-btn-container {
   text-align: end;
 }
-.error-modal-btn {
+.notification-modal-btn {
   pointer-events: initial;
   font-weight: bold;
   background: none;
@@ -32,10 +34,10 @@
   font-size: 35px;
   cursor: pointer;
 }
-.error-modal span {
+.notification-modal span {
   line-height: 1.5;
   font-size: 20px;
-  padding: 20px;
+  padding: 30px;
 }
 .disabled {
   pointer-events: none;

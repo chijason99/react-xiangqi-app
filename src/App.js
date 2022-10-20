@@ -3,7 +3,17 @@ import useState from "react-usestateref";
 import Board from "./Board/Board";
 import BoardOptions from "./Board/BoardOptions";
 import BoardInfo from "./BoardInfo/BoardInfo";
-import ErrorModal from "./BoardInfo/ErrorModal";
+import NotificationModal from "./BoardInfo/NotificationModal";
+import {
+  pawn,
+  advisor,
+  bishop,
+  king,
+  rook,
+  cannon,
+  knight,
+  checkDanger,
+} from "./pieceLogic";
 import "./css/app.css";
 
 export const BoardContext = React.createContext();
@@ -18,12 +28,13 @@ function App() {
     color: null,
     row: null,
     column: null,
-    isAvailable: true,
+    isAvailable: false,
     isPreviousMoved: false,
     isJustMoved: false,
     isSelected: false,
   };
-  const initFEN = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR";
+  const initFEN =
+    "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w";
   row.forEach((r) => {
     column.forEach((c) => {
       const square = {
@@ -41,18 +52,43 @@ function App() {
   const [sqr, setSqr, latestSqr] = useState(squares);
   const [isFlipped, setIsFlipped] = useState(false);
   const [selectedSquareInfo, setSelectedSquareInfo] = useState();
+  const [availableSqr, setAvailableSqr, latestAvailableSqr] = useState([]);
   const [counter, setCounter] = useState(0);
   const [currentTurn, setCurrentTurn] = useState("red");
   const [capturedPieceList, setCapturedPieceList] = useState([]);
   const [FENOutput, setFENOutput] = useState(initFEN);
   const [error, setError] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
-  useEffect(() => handleGenerateFEN);
-
+  useEffect(() => {
+    handleGenerateFEN();
+    checkGameOver();
+  });
+  useEffect(() => {
+    handleInit();
+    // NOTE: Run effect once on component mount, please
+    // recheck dependencies if effect is updated.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // useEffect(() => checkGameOver(), [sqr])
+  function addAvailableStyle() {
+    const newSqr = [...sqr];
+    for (const s of newSqr) {
+      s.isAvailable = false;
+      if (latestAvailableSqr.current.some((sqr) => sqr.id === s.id)) {
+        s.isAvailable = true;
+      }
+    }
+    setSqr(newSqr);
+  }
   function handleSelectSquare(row, column) {
     const newSqr = [...sqr];
-    const target = newSqr.find((s) => s.id === `${row}-${column}`);
-    setSelectedSquareInfo((prevState) => ({ ...prevState, ...{ ...target } }));
+    const index = newSqr.findIndex((s) => s.id === `${row}-${column}`);
+    for (const s of newSqr) {
+      s.isSelected = false;
+    }
+    newSqr[index].isSelected = true;
+    setSelectedSquareInfo((prevState) => ({ ...prevState, ...newSqr[index] }));
     setCounter(1);
   }
   function handleClearBoard() {
@@ -66,11 +102,13 @@ function App() {
       return newBoard;
     });
   }
-  function handleMovePiece(color, row, column) {
+  function handleMovePiece(piece, color, row, column) {
     // if no piece was selected
     if (counter % 2 === 0) {
       if (color === currentTurn) {
         handleSelectSquare(row, column);
+        setAvailableSqr(findAvailableSqr(piece, color, row, column));
+        addAvailableStyle();
       } else {
         return;
       }
@@ -78,8 +116,10 @@ function App() {
       // if you selected a piece and then click on another piece of yours
       if (color === currentTurn) {
         handleSelectSquare(row, column);
+        setAvailableSqr(findAvailableSqr(piece, color, row, column));
+        addAvailableStyle();
         return;
-      } else {
+      } else if (availableSqr.some((sqr) => sqr.id === `${row}-${column}`)) {
         // if you are clicking on your opponent's piece, i.e. capturing a piece
         if (color !== null) {
           //setting the state of captured Piece list
@@ -97,27 +137,139 @@ function App() {
           const destinationIndex = newSqr.findIndex(
             (s) => s.id === `${row}-${column}`
           );
+          for (const s of newSqr) {
+            s.isJustMoved = false;
+            s.isPreviousMoved = false;
+            s.isAvailable = false;
+          }
           // clear the starting position
           newSqr[startIndex] = {
             ...newSqr[startIndex],
             piece: null,
             color: null,
+            isPreviousMoved: true,
           };
           // create the piece at destination
           newSqr[destinationIndex] = {
             ...newSqr[destinationIndex],
             piece: selectedSquareInfo.piece,
             color: selectedSquareInfo.color,
+            isJustMoved: true,
           };
-          // change turn order
-          currentTurn === "red"
-            ? setCurrentTurn("black")
-            : setCurrentTurn("red");
-          setCounter(2);
-          setSelectedSquareInfo("");
           return newSqr;
         });
+        // change turn order
+        currentTurn === "red" ? setCurrentTurn("black") : setCurrentTurn("red");
+        checkGameOver();
+        setCounter(2);
+        setSelectedSquareInfo("");
+      } else if (!availableSqr.some((sqr) => sqr.id === `${row}-${column}`)) {
+        // if selecting unavailable sqr
+        const newSqr = [...sqr];
+        for (const s of newSqr) {
+          s.isAvailable = false;
+          s.isSelected = false;
+        }
+        setSqr(newSqr);
+        setSelectedSquareInfo("");
+        setAvailableSqr([]);
+        return;
       }
+    }
+  }
+  function findAvailableSqr(piece, color, row, column) {
+    const newSqr = [...sqr];
+    const targetSqr = [];
+    const selectSqrById = (id) => newSqr.find((s) => s.id === id);
+    const generateTargetSqr = (ary) => {
+      for (const sq of ary) {
+        targetSqr.push(selectSqrById(sq));
+      }
+    };
+    switch (piece) {
+      case "pawn":
+        generateTargetSqr(pawn(color, row, column));
+        break;
+      case "advisor":
+        generateTargetSqr(advisor(color, row, column));
+        break;
+      case "bishop":
+        generateTargetSqr(bishop([...sqr], color, row, column));
+        break;
+      case "king":
+        generateTargetSqr(king(color, row, column));
+        break;
+      case "rook":
+        generateTargetSqr(rook([...sqr], row, column));
+        break;
+      case "cannon":
+        generateTargetSqr(cannon([...sqr], color, row, column));
+        break;
+      case "knight":
+        generateTargetSqr(knight([...sqr], row, column));
+        break;
+      default:
+        return;
+    }
+    const newTargetSqr = targetSqr.filter((s) => s.color !== currentTurn); //filtered out the sqr that have teammates on it
+    const validatedTargetSqr = [];
+    for (const target of newTargetSqr) {
+      //loop through the newTargetSqr
+      const stimulateSqr = [...sqr];
+      const originalIndex = stimulateSqr.findIndex(
+        (s) => s.id === `${row}-${column}`
+      );
+      const destinationIndex = stimulateSqr.findIndex(
+        (s) => s.id === `${target.row}-${target.column}`
+      );
+      stimulateSqr[originalIndex] = {
+        ...stimulateSqr[originalIndex],
+        piece: null,
+        color: null,
+      }; //modified the original sqr
+      stimulateSqr[destinationIndex] = {
+        ...stimulateSqr[destinationIndex],
+        piece: piece,
+        color: color,
+      }; // modify the target sqr
+      const kingSqr = stimulateSqr.find(
+        (s) => s.piece === "king" && s.color === color
+      ); //locate the king in the stimulated sqr
+      if (
+        checkDanger(stimulateSqr, color, kingSqr.row, kingSqr.column) ==
+        undefined
+      ) {
+        // if the king is safe after stimulation, then the move is valid
+        validatedTargetSqr.push(target);
+      }
+    }
+    return validatedTargetSqr;
+  }
+  function checkGameOver() {
+    const pieceList = sqr.filter(
+      (p) => p.color === currentTurn && p.piece != null
+    );
+    console.log(pieceList);
+    const possibleMoveList = [];
+    for (const piece of pieceList) {
+      const moveList = findAvailableSqr(
+        piece.piece,
+        piece.color,
+        piece.row,
+        piece.column
+      );
+      // console.log(moveList)
+      if (moveList.length !== 0) {
+        possibleMoveList.push(...moveList);
+      }
+    }
+    console.log(possibleMoveList, possibleMoveList.length);
+    if (possibleMoveList.length === 0) {
+      setGameOver(true);
+      return
+    } else {
+      setGameOver(false);
+      return
     }
   }
   function handleFlipBoard() {
@@ -127,13 +279,10 @@ function App() {
       return flippedBoard;
     });
   }
-  function handleCreatePiece(piece, color, row, column) {
-    setSqr((prevState) => {
-      const newSqr = [...prevState];
-      const index = newSqr.findIndex((s) => s.id === `${row}-${column}`);
-      newSqr[index] = { ...newSqr[index], piece: piece, color: color };
-      return newSqr;
-    });
+  function handleInit() {
+    handleClearBoard();
+    setCapturedPieceList([]);
+    handleParseFENInput(initFEN);
   }
   function validFENInput(input) {
     if (!input.trim().split("/")) {
@@ -299,8 +448,12 @@ function App() {
       return "black";
     }
   }
-  function handleCloseErrorModal() {
-    setError(false);
+  function handleCloseNotificationModal() {
+    if (error === true) {
+      setError(false);
+    } else if (gameOver === true) {
+      setGameOver(false);
+    }
   }
   function handleOpenErrorModal() {
     setError(true);
@@ -319,15 +472,21 @@ function App() {
       }}
     >
       <div>
-        {error && <ErrorModal handleCloseErrorModal={handleCloseErrorModal} />}
-        <div className={`app__header ${error ? "disabled" : ""}`}>
+        {(error || gameOver) && (
+          <NotificationModal
+            handleCloseNotificationModal={handleCloseNotificationModal}
+            error={error}
+            gameOver={gameOver}
+            currentTurn={currentTurn}
+          />
+        )}
+        <div className={`app__header ${error || gameOver ? "disabled" : ""}`}>
           <h1 className={currentTurn === "red" ? "red" : "black"}>
             Xiang Qi App
           </h1>
           <BoardOptions
             handleFlipBoard={handleFlipBoard}
-            handleCreatePiece={handleCreatePiece}
-            handleClearBoard={handleClearBoard}
+            handleInit={handleInit}
           />
         </div>
         <div className={`app__container ${error ? "disabled" : ""}`}>
