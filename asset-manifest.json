@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-xiangqi-app/static/css/main.abd8112a.css",
-    "main.js": "/react-xiangqi-app/static/js/main.730d085a.js",
+    "main.js": "/react-xiangqi-app/static/js/main.100fe13c.js",
     "static/media/black_king.svg": "/react-xiangqi-app/static/media/black_king.9db03ae4de3788065d33.svg",
     "static/media/black_knight.svg": "/react-xiangqi-app/static/media/black_knight.a3c0dea0feab5c12c51d.svg",
     "static/media/black_rook.svg": "/react-xiangqi-app/static/media/black_rook.d52b5387f8320b2f6c97.svg",
@@ -19,10 +19,10 @@
     "static/media/xiangqi_gmchess_wood.svg": "/react-xiangqi-app/static/media/xiangqi_gmchess_wood.df76b42222212bfc1538.svg",
     "index.html": "/react-xiangqi-app/index.html",
     "main.abd8112a.css.map": "/react-xiangqi-app/static/css/main.abd8112a.css.map",
-    "main.730d085a.js.map": "/react-xiangqi-app/static/js/main.730d085a.js.map"
+    "main.100fe13c.js.map": "/react-xiangqi-app/static/js/main.100fe13c.js.map"
   },
   "entrypoints": [
     "static/css/main.abd8112a.css",
-    "static/js/main.730d085a.js"
+    "static/js/main.100fe13c.js"
   ]
 }
